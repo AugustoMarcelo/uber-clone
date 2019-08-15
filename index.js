@@ -1,9 +1,7 @@
-/**
- * @format
- */
-
-import {AppRegistry} from 'react-native';
+import { AppRegistry, YellowBox } from 'react-native';
 import App from './src';
-import {name as appName} from './app.json';
+import { name as appName } from './app.json';
+
+YellowBox.ignoreWarnings(['componentWillReceiveProps', 'componentWillMount']);
 
 AppRegistry.registerComponent(appName, () => App);
