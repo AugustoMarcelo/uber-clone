@@ -2,13 +2,15 @@ import React, { useState, useEffect, useRef } from 'react';
 import MapView, { Marker } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import Geocoder from 'react-native-geocoding';
-import { View } from 'react-native';
+import { View, Image } from 'react-native';
 
 import { getPixelSize } from '../../utils';
 import Search from '../Search';
 import Directions from '../Directions';
+import Details from '../Details';
 
 import markerImage from '../../assets/marker.png';
+import backImage from '../../assets/back.png';
 
 import {
   LocationBox,
@@ -16,6 +18,7 @@ import {
   LocationTimeBox,
   LocationTimeText,
   LocationTimeTextSmall,
+  Back,
 } from './styles';
 
 Geocoder.init('AIzaSyAJai_eIuGW6TaTlqZqONK2Dm7UGeJ8sos');
@@ -25,6 +28,13 @@ export default function Map() {
     latitude: -6.4793281,
     longitude: -37.0722295,
   });
+
+  const initialRegion = {
+    latitude: coordinates.latitude,
+    longitude: coordinates.longitude,
+    latitudeDelta: 0.0143,
+    longitudeDelta: 0.0134,
+  };
 
   const [destination, setDestination] = useState(null);
 
@@ -43,6 +53,10 @@ export default function Map() {
       longitude,
       title: data.structured_formatting.main_text,
     });
+  }
+
+  function handleBack() {
+    setDestination(null);
   }
 
   useEffect(() => {
@@ -72,12 +86,7 @@ export default function Map() {
     <View style={{ flex: 1 }}>
       <MapView
         style={{ flex: 1 }}
-        initialRegion={{
-          latitude: coordinates.latitude,
-          longitude: coordinates.longitude,
-          latitudeDelta: 0.0143,
-          longitudeDelta: 0.0134,
-        }}
+        initialRegion={initialRegion}
         showsUserLocation
         loadingEnabled
         ref={mapView}
@@ -94,7 +103,7 @@ export default function Map() {
                     right: getPixelSize(50),
                     left: getPixelSize(50),
                     top: getPixelSize(50),
-                    bottom: getPixelSize(50),
+                    bottom: getPixelSize(350),
                   },
                 });
               }}
@@ -122,7 +131,16 @@ export default function Map() {
         )}
       </MapView>
 
-      <Search onLocationSelected={handleLocationSelected} />
+      {destination ? (
+        <>
+          <Back onPress={handleBack}>
+            <Image source={backImage} />
+          </Back>
+          <Details />
+        </>
+      ) : (
+        <Search onLocationSelected={handleLocationSelected} />
+      )}
     </View>
   );
 }
