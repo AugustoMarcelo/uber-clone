@@ -27,3 +27,20 @@ export const LocationText = styled.Text`
   font-size: 14px;
   color: #333;
 `;
+
+export const LocationTimeBox = styled.View`
+  background: #222;
+  padding: 3px 8px;
+`;
+
+export const LocationTimeText = styled.Text`
+  color: #fff;
+  font-size: 12px;
+  text-align: center;
+`;
+
+export const LocationTimeTextSmall = styled.Text`
+  color: #fff;
+  font-size: 10px;
+  text-align: center;
+`;
