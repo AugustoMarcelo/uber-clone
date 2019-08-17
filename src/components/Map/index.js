@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import MapView from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import { View } from 'react-native';
 
 import { getPixelSize } from '../../utils';
 import Search from '../Search';
 import Directions from '../Directions';
+
+import markerImage from '../../assets/marker.png';
 
 export default function Map() {
   const [coordinates, setCoordinates] = useState({
@@ -61,20 +63,27 @@ export default function Map() {
         ref={mapView}
       >
         {destination && (
-          <Directions
-            origin={coordinates}
-            destination={destination}
-            onReady={result => {
-              mapView.current.fitToCoordinates(result.coordinates, {
-                edgePadding: {
-                  right: getPixelSize(50),
-                  left: getPixelSize(50),
-                  top: getPixelSize(50),
-                  bottom: getPixelSize(50),
-                },
-              });
-            }}
-          />
+          <>
+            <Directions
+              origin={coordinates}
+              destination={destination}
+              onReady={result => {
+                mapView.current.fitToCoordinates(result.coordinates, {
+                  edgePadding: {
+                    right: getPixelSize(50),
+                    left: getPixelSize(50),
+                    top: getPixelSize(50),
+                    bottom: getPixelSize(50),
+                  },
+                });
+              }}
+            />
+            <Marker
+              coordinate={destination}
+              anchor={{ x: 0, y: 0 }}
+              image={markerImage}
+            />
+          </>
         )}
       </MapView>
 
