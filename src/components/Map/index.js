@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import MapView from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
 import { View } from 'react-native';
 
+import { getPixelSize } from '../../utils';
 import Search from '../Search';
 import Directions from '../Directions';
 
@@ -11,7 +12,10 @@ export default function Map() {
     latitude: -6.4793281,
     longitude: -37.0722295,
   });
+
   const [destination, setDestination] = useState(null);
+
+  const mapView = useRef();
 
   function handleLocationSelected(data, { geometry }) {
     const {
@@ -54,12 +58,22 @@ export default function Map() {
         }}
         showsUserLocation
         loadingEnabled
+        ref={mapView}
       >
         {destination && (
           <Directions
             origin={coordinates}
             destination={destination}
-            onReady={() => {}}
+            onReady={result => {
+              mapView.current.fitToCoordinates(result.coordinates, {
+                edgePadding: {
+                  right: getPixelSize(50),
+                  left: getPixelSize(50),
+                  top: getPixelSize(50),
+                  bottom: getPixelSize(50),
+                },
+              });
+            }}
           />
         )}
       </MapView>
