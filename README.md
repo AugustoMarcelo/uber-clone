@@ -8,3 +8,7 @@
 | react-native-maps-directions | Retornar a direção entre dois pontos |
 | react-native-geocoding | Buscar o nome da rua a partir da `latitude` e `longitude`
 
+![](/preview/preview_1.jpg)
+![](/preview/preview_2.jpg)
+
+
