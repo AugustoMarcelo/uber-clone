@@ -25,6 +25,8 @@ export default function Map() {
 
   const [destination, setDestination] = useState(null);
 
+  const [duration, setDuration] = useState(null);
+
   const mapView = useRef();
 
   function handleLocationSelected(data, { geometry }) {
@@ -76,6 +78,7 @@ export default function Map() {
               origin={coordinates}
               destination={destination}
               onReady={result => {
+                setDuration(Math.floor(result.duration));
                 mapView.current.fitToCoordinates(result.coordinates, {
                   edgePadding: {
                     right: getPixelSize(50),
@@ -99,7 +102,7 @@ export default function Map() {
             <Marker coordinate={coordinates} anchor={{ x: 0, y: 0 }}>
               <LocationBox>
                 <LocationTimeBox>
-                  <LocationTimeText>31</LocationTimeText>
+                  <LocationTimeText>{duration}</LocationTimeText>
                   <LocationTimeTextSmall>MIN</LocationTimeTextSmall>
                 </LocationTimeBox>
                 <LocationText>Av. Camilo Calazans</LocationText>
