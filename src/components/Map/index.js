@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import MapView, { Marker } from 'react-native-maps';
 import Geolocation from '@react-native-community/geolocation';
+import Geocoder from 'react-native-geocoding';
 import { View } from 'react-native';
 
 import { getPixelSize } from '../../utils';
@@ -17,6 +18,8 @@ import {
   LocationTimeTextSmall,
 } from './styles';
 
+Geocoder.init('AIzaSyAJai_eIuGW6TaTlqZqONK2Dm7UGeJ8sos');
+
 export default function Map() {
   const [coordinates, setCoordinates] = useState({
     latitude: -6.4793281,
@@ -26,6 +29,8 @@ export default function Map() {
   const [destination, setDestination] = useState(null);
 
   const [duration, setDuration] = useState(null);
+
+  const [location, setLocation] = useState(null);
 
   const mapView = useRef();
 
@@ -53,6 +58,11 @@ export default function Map() {
           maximumAge: 1000,
         }
       );
+
+      const response = await Geocoder.from(coordinates);
+      const address = response.results[0].formatted_address;
+      const locationFiltered = address.substring(0, address.indexOf(','));
+      setLocation(locationFiltered);
     }
 
     loadCurrentPosition();
@@ -105,7 +115,7 @@ export default function Map() {
                   <LocationTimeText>{duration}</LocationTimeText>
                   <LocationTimeTextSmall>MIN</LocationTimeTextSmall>
                 </LocationTimeBox>
-                <LocationText>Av. Camilo Calazans</LocationText>
+                <LocationText>{location}</LocationText>
               </LocationBox>
             </Marker>
           </>
