@@ -3,14 +3,12 @@ import { Platform } from 'react-native';
 
 import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
 
-export default function Search() {
+export default function Search({ onLocationSelected }) {
   return (
     <GooglePlacesAutocomplete
       placeholder="Para onde?"
       placeholderTextColor="#333"
-      onPress={(data, details) => {
-        console.log(data, details);
-      }}
+      onPress={onLocationSelected}
       query={{
         key: 'AIzaSyAJai_eIuGW6TaTlqZqONK2Dm7UGeJ8sos',
         language: 'pt',
